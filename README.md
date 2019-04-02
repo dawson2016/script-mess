@@ -1,5 +1,5 @@
 # script-mess
-`python` `shell`各种运维脚本
+- `python` `shell`各种运维脚本
 ----
 |名称|功能|
 |:-|:-|
