@@ -1,0 +1,87 @@
+apiVersion: v1  
+kind: Namespace  
+metadata:  
+   name: hsrc  
+   labels:  
+     name: hsrc  
+---
+apiVersion: extensions/v1beta1 
+#apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: nginx1-rc
+  namespace: hsrc
+spec:
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        app: nginx1-rc
+    spec:
+      containers:
+      - name: nginx1-rc
+        image: harbor.hseduyun.net/hs/nginx-1.13.8 
+        volumeMounts:
+        - mountPath: "/usr/share/nginx/html"
+          name: mypv
+        resources: 
+          requests:
+            cpu: 200m
+        ports:
+        - containerPort: 80
+        volumes:
+      - name: mypv
+        persistentVolumeClaim:
+          claimName: weblogiclogs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: nginx1-svc
+  name: nginx1-svc
+  namespace: hsrc
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.backend.loadbalancer.method: drr
+    traefik.frontend.rule.type: PathPrefixStrip
+spec:
+  selector:
+    app: nginx1-rc
+  ports:
+  - port: 8888
+    protocol: TCP
+    targetPort: 80
+    name: nginx1-rc
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nginx1-ing 
+  namespace: hsrc
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.frontend.rule.type: PathPrefixStrip
+spec:
+  rules:
+  - host: k8sdev.hseduyun.net 
+    http:
+      paths:
+      - path: /test
+        backend:
+          serviceName: nginx1-svc
+          servicePort: 8888
+---
+apiVersion: autoscaling/v1  
+kind: HorizontalPodAutoscaler  
+metadata:  
+  name: nginx1-hpa
+  namespace: hsrc
+spec:  
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nginx1-rc
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 50
