@@ -2,7 +2,7 @@
 `python` `shell`各种运维脚本
 ----
 |名称|功能|
-|:-|:-|
+
 |Jenkinsfile|java-web项目pipeline构建|
 |addhost.sh	|向k8s容器注入hosts配置|
 |auto-study.py|法宣挂机学习脚本|
