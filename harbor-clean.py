@@ -23,3 +23,4 @@ for i in eval(response.content):
 			delurl=durl+i['name']+'/tags/'+str(k)
 			s.delete(delurl)
 
+#清理harbor仓库镜像，只留3个最近版本
