@@ -18,4 +18,4 @@ for i in eval(response.content):
 		resdata.reverse()
 		for k in resdata[3:]:
 			print durl+i['name']+'/tags/'+str(k)
-      print '写你删除逻辑即可'
+			print '写你删除逻辑即可'
