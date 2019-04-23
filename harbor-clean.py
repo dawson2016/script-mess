@@ -5,6 +5,9 @@ url='https://xxx/api/repositories?project_id=5'
 durl='https://xxx/api/repositories/'
 postfix='/tags?detail=1'
 response  = requests.get(url)
+s = requests.session()
+data = {'principal':'xxx','password':'xxx'}
+loginres=s.post('https://xxx/login',data=data)
 global null
 null = ''
 for i in eval(response.content):
@@ -17,5 +20,6 @@ for i in eval(response.content):
 		resdata.sort()
 		resdata.reverse()
 		for k in resdata[3:]:
-			print durl+i['name']+'/tags/'+str(k)
-			print '写你删除逻辑即可'
+			delurl=durl+i['name']+'/tags/'+str(k)
+			s.delete(delurl)
+
