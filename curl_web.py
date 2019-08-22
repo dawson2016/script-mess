@@ -22,7 +22,3 @@ def getlink(html):
 html = getHtml("http://www.bidnews.cn/caigou/zhaobiao-2276652.html")
 print (getlink(html))
 #print (len(getlink(html)))
-
-1024aa66942f3a1af317e25aa5c4a7a3
-lizhijie
-http://ad.smsadmin.cn/index.html
